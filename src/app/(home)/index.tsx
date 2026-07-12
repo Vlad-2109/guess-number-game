@@ -1,4 +1,5 @@
 import { LinearGradient } from 'expo-linear-gradient';
+import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import {
 	Alert,
@@ -11,8 +12,11 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import PrimaryButton from '@/components/PrimaryButton';
+import { COLORS } from '@/constants/colors';
 
 const StartGame = () => {
+	const router = useRouter();
+
 	const [enteredNumber, setEnteredNumber] = useState<string>('');
 
 	const handleNumberInput = (enteredText: string) => {
@@ -40,12 +44,12 @@ const StartGame = () => {
 			return;
 		}
 
-		console.log('Valid number!');
+		router.push(`/game/${chosenNumber}`);
 	};
 
 	return (
 		<LinearGradient
-			colors={['#4e0329', '#ddb52f']}
+			colors={[COLORS.primary700, COLORS.accent500]}
 			style={styles.gradientContainer}
 		>
 			<ImageBackground
@@ -102,7 +106,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'column',
 		justifyContent: 'flex-start',
 		alignItems: 'center',
-		backgroundColor: '#4e0329',
+		backgroundColor: COLORS.primary800,
 		borderRadius: 8,
 		...Platform.select({
 			android: {
@@ -123,9 +127,9 @@ const styles = StyleSheet.create({
 		fontSize: 32,
 		fontWeight: 'bold',
 		textAlign: 'center',
-		color: '#ddb52f',
+		color: COLORS.accent500,
 		borderBottomWidth: 2,
-		borderBottomColor: '#ddb52f',
+		borderBottomColor: COLORS.accent500,
 		marginVertical: 8,
 	},
 	buttonsContainer: {
