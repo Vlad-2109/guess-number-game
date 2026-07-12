@@ -1,5 +1,7 @@
 import { LinearGradient } from 'expo-linear-gradient';
+import { useState } from 'react';
 import {
+	Alert,
 	ImageBackground,
 	Platform,
 	StyleSheet,
@@ -11,6 +13,36 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import PrimaryButton from '@/components/PrimaryButton';
 
 const StartGame = () => {
+	const [enteredNumber, setEnteredNumber] = useState<string>('');
+
+	const handleNumberInput = (enteredText: string) => {
+		setEnteredNumber(enteredText);
+	};
+
+	const resetInput = () => {
+		setEnteredNumber('');
+	};
+
+	const confirmInput = () => {
+		const chosenNumber = parseInt(enteredNumber);
+		if (isNaN(chosenNumber) || chosenNumber <= 0 || chosenNumber > 99) {
+			Alert.alert(
+				'Invalid number!',
+				'Number has to be a number between 1 and 99',
+				[
+					{
+						text: 'Okay',
+						style: 'destructive',
+						onPress: resetInput,
+					},
+				],
+			);
+			return;
+		}
+
+		console.log('Valid number!');
+	};
+
 	return (
 		<LinearGradient
 			colors={['#4e0329', '#ddb52f']}
@@ -25,6 +57,8 @@ const StartGame = () => {
 				<SafeAreaView style={styles.container}>
 					<View style={styles.inputContainer}>
 						<TextInput
+							value={enteredNumber}
+							onChangeText={handleNumberInput}
 							style={styles.numberInput}
 							maxLength={2}
 							keyboardType="number-pad"
@@ -33,10 +67,10 @@ const StartGame = () => {
 						/>
 						<View style={styles.buttonsContainer}>
 							<View style={styles.buttonContainer}>
-								<PrimaryButton>Reset</PrimaryButton>
+								<PrimaryButton onPress={resetInput}>Reset</PrimaryButton>
 							</View>
 							<View style={styles.buttonContainer}>
-								<PrimaryButton>Confirm</PrimaryButton>
+								<PrimaryButton onPress={confirmInput}>Confirm</PrimaryButton>
 							</View>
 						</View>
 					</View>
@@ -89,7 +123,7 @@ const styles = StyleSheet.create({
 		fontSize: 32,
 		fontWeight: 'bold',
 		textAlign: 'center',
-		color: '#3b021f',
+		color: '#ddb52f',
 		borderBottomWidth: 2,
 		borderBottomColor: '#ddb52f',
 		marginVertical: 8,
