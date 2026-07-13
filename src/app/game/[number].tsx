@@ -12,8 +12,8 @@ import { generateRandomBetween } from '@/utils';
 
 const GameScreen = () => {
 	const { number: userNumber } = useLocalSearchParams();
-	let minBoundary = 1;
-	let maxBoundary = 100;
+	let minBoundary: number = 1;
+	let maxBoundary: number = 100;
 
 	const initialGuess = useMemo(
 		() => generateRandomBetween(minBoundary, maxBoundary, Number(userNumber)),
