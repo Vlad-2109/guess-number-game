@@ -1,14 +1,51 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import { useLocalSearchParams } from 'expo-router';
-import { ImageBackground, StyleSheet, Text, View } from 'react-native';
+import { useMemo, useState } from 'react';
+import { Alert, ImageBackground, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import Title from '@/components/Title';
+import NumberContainer from '@/components/game/NumberContainer';
+import PrimaryButton from '@/components/ui/PrimaryButton';
+import Title from '@/components/ui/Title';
 import { COLORS } from '@/constants/colors';
+import { generateRandomBetween } from '@/utils';
 
 const GameScreen = () => {
-	const { number } = useLocalSearchParams();
-	console.log('Number from page:', number);
+	const { number: userNumber } = useLocalSearchParams();
+	let minBoundary = 1;
+	let maxBoundary = 100;
+
+	const initialGuess = useMemo(
+		() => generateRandomBetween(minBoundary, maxBoundary, Number(userNumber)),
+		[userNumber],
+	);
+
+	const [currentGuess, setCurrentGuess] = useState<number>(initialGuess);
+
+	const nextGuess = (direction: 'lower' | 'higher') => {
+		if (
+			(direction === 'lower' && currentGuess < Number(userNumber)) ||
+			(direction === 'higher' && currentGuess > Number(userNumber))
+		) {
+			Alert.alert("Don't lie!", 'You know that this is wrong...', [
+				{ text: 'Sorry!', style: 'cancel' },
+			]);
+			return;
+		}
+
+		if (direction === 'lower') {
+			maxBoundary = currentGuess - 1;
+		} else {
+			minBoundary = currentGuess + 1;
+		}
+
+		const newRandonNumber = generateRandomBetween(
+			minBoundary,
+			maxBoundary,
+			currentGuess,
+		);
+		setCurrentGuess(newRandonNumber);
+	};
 
 	return (
 		<LinearGradient
@@ -24,11 +61,17 @@ const GameScreen = () => {
 				<SafeAreaView style={styles.container}>
 					<View style={styles.gameContainer}>
 						<Title>Opponent's Guess</Title>
-						{/* <Text>Guess</Text> */}
+						<NumberContainer>{currentGuess}</NumberContainer>
 						<View>
 							<Text>Higher or lower?</Text>
-							{/* <Text>+</Text>
-							<Text>-</Text> */}
+							<View>
+								<PrimaryButton onPress={nextGuess.bind(this, 'lower')}>
+									-
+								</PrimaryButton>
+								<PrimaryButton onPress={nextGuess.bind(this, 'higher')}>
+									+
+								</PrimaryButton>
+							</View>
 						</View>
 						{/* <View>
 							<Text>LOG ROUNDS</Text>
