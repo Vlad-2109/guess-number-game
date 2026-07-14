@@ -1,14 +1,18 @@
+import Ionicons from '@react-native-vector-icons/ionicons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useLocalSearchParams } from 'expo-router';
-import { useMemo, useState } from 'react';
-import { Alert, ImageBackground, StyleSheet, Text, View } from 'react-native';
+import { router, useLocalSearchParams } from 'expo-router';
+import { useEffect, useMemo, useState } from 'react';
+import { Alert, ImageBackground, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import NumberContainer from '@/components/game/NumberContainer';
-import PrimaryButton from '@/components/ui/PrimaryButton';
-import Title from '@/components/ui/Title';
 import { COLORS } from '@/constants/colors';
 import { generateRandomBetween } from '@/utils';
+
+import NumberContainer from '@/components/game/NumberContainer';
+import Card from '@/components/ui/Card';
+import InstructionText from '@/components/ui/InstructionText';
+import PrimaryButton from '@/components/ui/PrimaryButton';
+import Title from '@/components/ui/Title';
 
 const GameScreen = () => {
 	const { number: userNumber } = useLocalSearchParams();
@@ -21,6 +25,12 @@ const GameScreen = () => {
 	);
 
 	const [currentGuess, setCurrentGuess] = useState<number>(initialGuess);
+
+	useEffect(() => {
+		if (currentGuess === Number(userNumber)) {
+			router.push('/game-over');
+		}
+	}, [currentGuess, userNumber]);
 
 	const nextGuess = (direction: 'lower' | 'higher') => {
 		if (
@@ -62,17 +72,23 @@ const GameScreen = () => {
 					<View style={styles.gameContainer}>
 						<Title>Opponent's Guess</Title>
 						<NumberContainer>{currentGuess}</NumberContainer>
-						<View>
-							<Text>Higher or lower?</Text>
-							<View>
-								<PrimaryButton onPress={nextGuess.bind(this, 'lower')}>
-									-
-								</PrimaryButton>
-								<PrimaryButton onPress={nextGuess.bind(this, 'higher')}>
-									+
-								</PrimaryButton>
+						<Card>
+							<InstructionText style={styles.instructionText}>
+								Higher or lower?
+							</InstructionText>
+							<View style={styles.buttonsContainer}>
+								<View style={styles.buttonContainer}>
+									<PrimaryButton onPress={nextGuess.bind(this, 'lower')}>
+										<Ionicons name="remove" size={24} color="white" />
+									</PrimaryButton>
+								</View>
+								<View style={styles.buttonContainer}>
+									<PrimaryButton onPress={nextGuess.bind(this, 'higher')}>
+										<Ionicons name="add" size={24} color="white" />
+									</PrimaryButton>
+								</View>
 							</View>
-						</View>
+						</Card>
 						{/* <View>
 							<Text>LOG ROUNDS</Text>
 						</View> */}
@@ -100,5 +116,14 @@ const styles = StyleSheet.create({
 	},
 	gameContainer: {
 		padding: 12,
+	},
+	instructionText: {
+		marginBottom: 12,
+	},
+	buttonsContainer: {
+		flexDirection: 'row',
+	},
+	buttonContainer: {
+		flex: 1,
 	},
 });

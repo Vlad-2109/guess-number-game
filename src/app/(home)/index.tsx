@@ -4,15 +4,18 @@ import { useState } from 'react';
 import {
 	Alert,
 	ImageBackground,
-	Platform,
 	StyleSheet,
 	TextInput,
 	View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import PrimaryButton from '@/components/ui/PrimaryButton';
 import { COLORS } from '@/constants/colors';
+
+import Card from '@/components/ui/Card';
+import InstructionText from '@/components/ui/InstructionText';
+import PrimaryButton from '@/components/ui/PrimaryButton';
+import Title from '@/components/ui/Title';
 
 const StartGame = () => {
 	const router = useRouter();
@@ -59,7 +62,9 @@ const StartGame = () => {
 				style={styles.imageBackground}
 			>
 				<SafeAreaView style={styles.container}>
-					<View style={styles.inputContainer}>
+					<Title>Guess My Number</Title>
+					<Card>
+						<InstructionText>Enter a number</InstructionText>
 						<TextInput
 							value={enteredNumber}
 							onChangeText={handleNumberInput}
@@ -77,7 +82,7 @@ const StartGame = () => {
 								<PrimaryButton onPress={confirmInput}>Confirm</PrimaryButton>
 							</View>
 						</View>
-					</View>
+					</Card>
 				</SafeAreaView>
 			</ImageBackground>
 		</LinearGradient>
@@ -98,28 +103,8 @@ const styles = StyleSheet.create({
 	},
 	container: {
 		flex: 1,
-	},
-	inputContainer: {
-		marginTop: 50,
-		padding: 16,
-		marginHorizontal: 24,
-		flexDirection: 'column',
-		justifyContent: 'flex-start',
+		paddingTop: 100,
 		alignItems: 'center',
-		backgroundColor: COLORS.primary800,
-		borderRadius: 8,
-		...Platform.select({
-			android: {
-				elevation: 4,
-			},
-			ios: {
-				shadowColor: 'black',
-				shadowOffset: { width: 0, height: 2 },
-				shadowRadius: 6,
-				shadowOpacity: 0.25,
-			},
-			default: {},
-		}),
 	},
 	numberInput: {
 		height: 50,
