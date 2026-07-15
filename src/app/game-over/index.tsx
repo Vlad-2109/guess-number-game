@@ -1,7 +1,8 @@
 import { LinearGradient } from 'expo-linear-gradient';
-import { ImageBackground, StyleSheet, Text } from 'react-native';
+import { Image, ImageBackground, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import Title from '@/components/ui/Title';
 import { COLORS } from '@/constants/colors';
 
 export default function GameOverScreen() {
@@ -17,7 +18,14 @@ export default function GameOverScreen() {
 				style={styles.imageBackground}
 			>
 				<SafeAreaView style={styles.container}>
-					<Text>Game is over!</Text>
+					<Title>Game is over!</Title>
+					<View style={styles.imageContainer}>
+						<Image
+							source={require('@/assets/images/success.png')}
+							style={styles.imageSuccess}
+						/>
+					</View>
+					<Text>Your phone needed X rounds to guess the number Y.</Text>
 				</SafeAreaView>
 			</ImageBackground>
 		</LinearGradient>
@@ -36,5 +44,20 @@ const styles = StyleSheet.create({
 	},
 	container: {
 		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+	imageContainer: {
+		width: 300,
+		height: 300,
+		marginVertical: 36,
+		borderRadius: 150,
+		borderWidth: 3,
+		borderColor: COLORS.primary800,
+		overflow: 'hidden',
+	},
+	imageSuccess: {
+		width: '100%',
+		height: '100%',
 	},
 });
