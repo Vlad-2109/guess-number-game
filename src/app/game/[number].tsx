@@ -14,10 +14,11 @@ import InstructionText from '@/components/ui/InstructionText';
 import PrimaryButton from '@/components/ui/PrimaryButton';
 import Title from '@/components/ui/Title';
 
+let minBoundary: number = 1;
+let maxBoundary: number = 100;
+
 const GameScreen = () => {
 	const { number: userNumber } = useLocalSearchParams();
-	let minBoundary: number = 1;
-	let maxBoundary: number = 100;
 
 	const initialGuess = useMemo(
 		() => generateRandomBetween(minBoundary, maxBoundary, Number(userNumber)),
@@ -28,9 +29,17 @@ const GameScreen = () => {
 
 	useEffect(() => {
 		if (currentGuess === Number(userNumber)) {
-			router.push('/game-over');
+			router.push({
+				pathname: '/game-over',
+				params: { roundsNumber: 0, userNumber: userNumber },
+			});
 		}
 	}, [currentGuess, userNumber]);
+
+	useEffect(() => {
+		minBoundary = 1;
+		maxBoundary = 100;
+	}, []);
 
 	const nextGuess = (direction: 'lower' | 'higher') => {
 		if (
