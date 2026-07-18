@@ -2,7 +2,14 @@ import Ionicons from '@react-native-vector-icons/ionicons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
-import { Alert, ImageBackground, StyleSheet, View } from 'react-native';
+import {
+	Alert,
+	FlatList,
+	ImageBackground,
+	StyleSheet,
+	Text,
+	View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { COLORS } from '@/constants/colors';
@@ -26,12 +33,13 @@ const GameScreen = () => {
 	);
 
 	const [currentGuess, setCurrentGuess] = useState<number>(initialGuess);
+	const [guessRounds, setGuessRounds] = useState<number[]>([initialGuess]);
 
 	useEffect(() => {
 		if (currentGuess === Number(userNumber)) {
 			router.push({
 				pathname: '/game-over',
-				params: { roundsNumber: 0, userNumber: userNumber },
+				params: { roundsNumber: guessRounds.length, userNumber: userNumber },
 			});
 		}
 	}, [currentGuess, userNumber]);
@@ -64,6 +72,7 @@ const GameScreen = () => {
 			currentGuess,
 		);
 		setCurrentGuess(newRandonNumber);
+		setGuessRounds((prevGuessRounds) => [newRandonNumber, ...prevGuessRounds]);
 	};
 
 	return (
@@ -98,9 +107,13 @@ const GameScreen = () => {
 								</View>
 							</View>
 						</Card>
-						{/* <View>
-							<Text>LOG ROUNDS</Text>
-						</View> */}
+						<View>
+							<FlatList
+								data={guessRounds}
+								renderItem={({ item }) => <Text>{item}</Text>}
+								keyExtractor={(guessRound) => guessRound.toString()}
+							/>
+						</View>
 					</View>
 				</SafeAreaView>
 			</ImageBackground>
