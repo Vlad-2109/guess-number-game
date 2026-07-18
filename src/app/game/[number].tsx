@@ -109,7 +109,7 @@ const GameScreen = () => {
 								</View>
 							</View>
 						</Card>
-						<View>
+						<View style={styles.listContainer}>
 							<FlatList
 								data={guessRounds}
 								renderItem={(itemData) => (
@@ -144,6 +144,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 	gameContainer: {
+		flex: 1,
 		padding: 12,
 	},
 	instructionText: {
@@ -154,5 +155,9 @@ const styles = StyleSheet.create({
 	},
 	buttonContainer: {
 		flex: 1,
+	},
+	listContainer: {
+		flex: 1,
+		padding: 16,
 	},
 });
