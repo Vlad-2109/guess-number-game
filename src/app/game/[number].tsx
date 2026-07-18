@@ -7,7 +7,6 @@ import {
 	FlatList,
 	ImageBackground,
 	StyleSheet,
-	Text,
 	View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -15,6 +14,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS } from '@/constants/colors';
 import { generateRandomBetween } from '@/utils';
 
+import GuessLogItem from '@/components/game/GuessLogItem';
 import NumberContainer from '@/components/game/NumberContainer';
 import Card from '@/components/ui/Card';
 import InstructionText from '@/components/ui/InstructionText';
@@ -75,6 +75,8 @@ const GameScreen = () => {
 		setGuessRounds((prevGuessRounds) => [newRandonNumber, ...prevGuessRounds]);
 	};
 
+	const guessRoundsListLength = guessRounds.length;
+
 	return (
 		<LinearGradient
 			colors={[COLORS.primary700, COLORS.accent500]}
@@ -110,7 +112,12 @@ const GameScreen = () => {
 						<View>
 							<FlatList
 								data={guessRounds}
-								renderItem={({ item }) => <Text>{item}</Text>}
+								renderItem={(itemData) => (
+									<GuessLogItem
+										roundNumber={guessRoundsListLength - itemData.index}
+										guess={itemData.item}
+									/>
+								)}
 								keyExtractor={(guessRound) => guessRound.toString()}
 							/>
 						</View>
