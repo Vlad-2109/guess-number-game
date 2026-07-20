@@ -7,6 +7,7 @@ import {
 	StyleSheet,
 	TextInput,
 	View,
+	useWindowDimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -21,6 +22,10 @@ const StartGame = () => {
 	const router = useRouter();
 
 	const [enteredNumber, setEnteredNumber] = useState<string>('');
+
+	const { height } = useWindowDimensions();
+
+	const paddingTopDistance = height < 420 ? 50 : 100;
 
 	const handleNumberInput = (enteredText: string) => {
 		setEnteredNumber(enteredText);
@@ -61,7 +66,9 @@ const StartGame = () => {
 				imageStyle={styles.image}
 				style={styles.imageBackground}
 			>
-				<SafeAreaView style={styles.container}>
+				<SafeAreaView
+					style={[styles.container, { paddingTop: paddingTopDistance }]}
+				>
 					<Title>Guess My Number</Title>
 					<Card>
 						<InstructionText>Enter a number</InstructionText>
@@ -103,7 +110,6 @@ const styles = StyleSheet.create({
 	},
 	container: {
 		flex: 1,
-		paddingTop: 100,
 		alignItems: 'center',
 	},
 	numberInput: {
