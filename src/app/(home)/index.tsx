@@ -4,6 +4,8 @@ import { useState } from 'react';
 import {
 	Alert,
 	ImageBackground,
+	KeyboardAvoidingView,
+	ScrollView,
 	StyleSheet,
 	TextInput,
 	View,
@@ -66,31 +68,37 @@ const StartGame = () => {
 				imageStyle={styles.image}
 				style={styles.imageBackground}
 			>
-				<SafeAreaView
-					style={[styles.container, { paddingTop: paddingTopDistance }]}
-				>
-					<Title>Guess My Number</Title>
-					<Card>
-						<InstructionText>Enter a number</InstructionText>
-						<TextInput
-							value={enteredNumber}
-							onChangeText={handleNumberInput}
-							style={styles.numberInput}
-							maxLength={2}
-							keyboardType="number-pad"
-							autoCapitalize="none"
-							autoCorrect={false}
-						/>
-						<View style={styles.buttonsContainer}>
-							<View style={styles.buttonContainer}>
-								<PrimaryButton onPress={resetInput}>Reset</PrimaryButton>
-							</View>
-							<View style={styles.buttonContainer}>
-								<PrimaryButton onPress={confirmInput}>Confirm</PrimaryButton>
-							</View>
-						</View>
-					</Card>
-				</SafeAreaView>
+				<ScrollView style={styles.screen}>
+					<KeyboardAvoidingView style={styles.screen} behavior="position">
+						<SafeAreaView
+							style={[styles.container, { paddingTop: paddingTopDistance }]}
+						>
+							<Title>Guess My Number</Title>
+							<Card>
+								<InstructionText>Enter a number</InstructionText>
+								<TextInput
+									value={enteredNumber}
+									onChangeText={handleNumberInput}
+									style={styles.numberInput}
+									maxLength={2}
+									keyboardType="number-pad"
+									autoCapitalize="none"
+									autoCorrect={false}
+								/>
+								<View style={styles.buttonsContainer}>
+									<View style={styles.buttonContainer}>
+										<PrimaryButton onPress={resetInput}>Reset</PrimaryButton>
+									</View>
+									<View style={styles.buttonContainer}>
+										<PrimaryButton onPress={confirmInput}>
+											Confirm
+										</PrimaryButton>
+									</View>
+								</View>
+							</Card>
+						</SafeAreaView>
+					</KeyboardAvoidingView>
+				</ScrollView>
 			</ImageBackground>
 		</LinearGradient>
 	);
@@ -107,6 +115,9 @@ const styles = StyleSheet.create({
 	},
 	image: {
 		opacity: 0.15,
+	},
+	screen: {
+		flex: 1,
 	},
 	container: {
 		flex: 1,
