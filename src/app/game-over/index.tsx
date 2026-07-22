@@ -14,7 +14,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS } from '@/constants/colors';
 
 import PrimaryButton from '@/components/ui/PrimaryButton';
-import Title from '@/components/ui/Title';
+import Title from '@/components/ui/Title.ios';
 
 export default function GameOverScreen() {
 	const { roundsNumber, userNumber } = useLocalSearchParams();
@@ -54,7 +54,9 @@ export default function GameOverScreen() {
 				style={styles.imageBackground}
 			>
 				<ScrollView style={styles.screen}>
-					<SafeAreaView style={[styles.container, {paddingTop: paddingTopDistance}]}>
+					<SafeAreaView
+						style={[styles.container, { paddingTop: paddingTopDistance }]}
+					>
 						<Title>Game is over!</Title>
 						<View style={[styles.imageContainer, imageStyle]}>
 							<Image

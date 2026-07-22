@@ -20,7 +20,7 @@ import NumberContainer from '@/components/game/NumberContainer';
 import Card from '@/components/ui/Card';
 import InstructionText from '@/components/ui/InstructionText';
 import PrimaryButton from '@/components/ui/PrimaryButton';
-import Title from '@/components/ui/Title';
+import Title from '@/components/ui/Title.ios';
 
 let minBoundary: number = 1;
 let maxBoundary: number = 100;
